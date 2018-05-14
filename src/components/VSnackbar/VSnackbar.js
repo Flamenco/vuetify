@@ -20,6 +20,7 @@ export default {
     multiLine: Boolean,
     // TODO: change this to closeDelay to match other API in delayable.js
     timeout: {
+      // -1 will keep the snackbar open until the timeout is set to a falsy value.
       type: Number,
       default: 6000
     },
@@ -53,9 +54,14 @@ export default {
       clearTimeout(this.activeTimeout)
 
       if (this.isActive && this.timeout) {
-        this.activeTimeout = setTimeout(() => {
-          this.isActive = false
-        }, this.timeout)
+        if (this.timeout === -1) {
+          this.isActive = true
+        }
+        else {
+          this.activeTimeout = setTimeout(() => {
+            this.isActive = false
+          }, this.timeout)
+        }
       }
     }
   },
